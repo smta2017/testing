@@ -1,2 +1,2 @@
 <?php
-echo "same";
+echo "sameh";
