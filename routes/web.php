@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/admin', 'AdminController@index');
+Route::get('/customer', 'CustomerController@index');
 
 
 Route::get('/login/admin', 'Auth\LoginController@showAdminLoginForm');
@@ -27,3 +28,10 @@ Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 
 Route::get('/register/admin', 'Auth\RegisterController@showAdminRegisterForm');
 Route::post('/register/admin', 'Auth\RegisterController@createAdmin');
+
+
+Route::get('/login/customer', 'Auth\LoginController@showCustomerLoginForm');
+Route::post('/login/customer', 'Auth\LoginController@customerLogin');
+
+Route::get('/register/customer', 'Auth\RegisterController@showCustomerRegisterForm');
+Route::post('/register/customer', 'Auth\RegisterController@createCustomer');

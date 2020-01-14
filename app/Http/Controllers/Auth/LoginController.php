@@ -69,4 +69,29 @@ class LoginController extends Controller
 
     // =================================================
 
+      // ====================== Admin===========================
+
+      public function showCustomerLoginForm()
+      {
+          return view('authCustomer.login');
+      }
+  
+  
+      public function customerLogin(Request $request)
+      {
+          $this->validate($request, [
+              'email'   => 'required|email',
+              'password' => 'required|min:6'
+          ]);
+  
+          if (\Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+  
+              return redirect()->intended('/customer');
+          }
+          return back()->withInput($request->only('email', 'remember'));
+      }
+  
+      // =================================================
+
+      
 }
