@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Admin;
-use App\Customer;
 
 
 class RegisterController extends Controller
@@ -78,7 +77,7 @@ class RegisterController extends Controller
 
 
 
-    //===========================================
+    //==================== Admin =======================
     public function showAdminRegisterForm()
     {
         return view('authAdmin.register');
@@ -86,35 +85,17 @@ class RegisterController extends Controller
 
 
     protected function createAdmin(Request $request)
-        {
-            $this->validator($request->all())->validate();
-            $admin = Admin::create([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'password' => Hash::make($request['password']),
-            ]);
-            return redirect()->intended('login/admin');
-        }
-    //===========================================
-
-
-    //===========================================
-    public function showCustomerRegisterForm()
     {
-        return view('authCustomer.register');
+        $this->validator($request->all())->validate();
+        $admin = Admin::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+        return redirect()->intended('login/admin');
     }
 
 
-    protected function createCustomer(Request $request)
-        {
-            $this->validator($request->all())->validate();
-            $customer = Customer::create([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'password' => Hash::make($request['password']),
-            ]);
-            return redirect()->intended('login/customer');
-        }
-    //===========================================
+ 
 
 }

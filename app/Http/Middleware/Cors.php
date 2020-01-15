@@ -15,12 +15,12 @@ class Cors
         header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
         header('Access-Control-Allow-Headers: Origin, Content-Type,content-type, authorization, Accept, Authorization, X-Request-With,*');
         header('Access-Control-Allow-Credentials: true');
-        // return response()->json($request->all());
-        return $next($request);
+
+        $response = $next($request);
+        // $response->header('Content-Type', 'text/html; charset=UTF-8');
+
+        return $response;
         
-        if (!$request->isMethod('options')) 
-        {
-            return $next($request);
-        }
+         
     }
 }
