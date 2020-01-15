@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'users',
             'hash' => false,
         ],
@@ -53,7 +53,7 @@ return [
         ],
 
         'admin-api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'admins',
             'hash' => false,
         ],
@@ -64,7 +64,7 @@ return [
         ],
 
         'customer-api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'customers',
             'hash' => false,
         ],
