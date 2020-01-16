@@ -30,6 +30,7 @@ class CreateCustomersTable extends Migration
             $table->integer('referred_by')->default(0);
             $table->integer('is_archive')->default(0);
             $table->integer('is_signedOut')->default(0);
+            $table->string('jwt_token','600');
             $table->timestamps();
         });
     }
