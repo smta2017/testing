@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Api\Helper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
+use JWTAuth;
 
 class UnanimousHelperController extends Controller
 {
    
     public function updateSignedOut(Request $request){
         // $this->authenticate($request);
-        // dd($request);
-        if ($request->getMethod()=="post") {
-            $customer = Customer::where('phone','01274200778')->first();
+        if ($request->getMethod()=="POST") { 
+             JWTAuth::setToken($request->header('Authorization'));
+            $claim = JWTAuth::getPayload();
+            $customer = Customer::find($claim['sub']);
             $customer->is_signedOut = 1;
             if($customer->update())
             {
@@ -30,11 +32,10 @@ class UnanimousHelperController extends Controller
             return json_encode($success_arr,JSON_NUMERIC_CHECK);   
         }else{
             $success_arr=array(
-                "status" => 1,
-                "message" => "Signed Out Updated Successfully."
+                "status" => 0,
+                "message" => "Signed Out Updated Failed."
             );
             return json_encode($success_arr,JSON_NUMERIC_CHECK);   
-
         }
     }
 

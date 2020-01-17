@@ -20,29 +20,33 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => ['cors']], function() {
 
-    Route::group([ 'prefix' => 'customer'], function ($router) {
-        Route::post('login', 'Api\Auth\CustomerAuthController@login');
-        Route::post('logout', 'Api\Auth\CustomerAuthController@logout');
-        Route::post('refresh', 'Api\Auth\CustomerAuthController@refresh');
-        Route::post('me', 'Api\Auth\CustomerAuthController@me');
-    });
+    // Customers
+    Route::post('login',    'Api\Customer\Auth\JwtAuthController@login');
+    Route::post('logout',   'Api\Customer\Auth\JwtAuthController@logout');
+    Route::post('refresh',  'Api\Customer\Auth\JwtAuthController@refresh');
+    Route::post('me',       'Api\Customer\Auth\JwtAuthController@me');
 
-    Route::group([ 'prefix' => 'admin'], function ($router) {
-        Route::post('login', 'Api\Auth\AdminAuthController@login');
-        Route::post('logout', 'Api\Auth\AdminAuthController@logout');
-        Route::post('refresh', 'Api\Auth\AdminAuthController@refresh');
-        Route::post('me', 'Api\Auth\AdminAuthController@me');
-    });
+    // Route::group([ 'prefix' => 'customer'], function ($router) {
+    // });
+
+    // Route::group([ 'prefix' => 'admin'], function ($router) {
+    //     Route::post('login', 'Api\Auth\AdminAuthController@login');
+    //     Route::post('logout', 'Api\Auth\AdminAuthController@logout');
+    //     Route::post('refresh', 'Api\Auth\AdminAuthController@refresh');
+    //     Route::post('me', 'Api\Auth\AdminAuthController@me');
+    // });
  
 
     //Old
-
     Route::post('send-sms', 'Api\Helper\SMSHelperController@resendSMSVerificationPin');
     Route::post('verify-phone', 'Api\Helper\SMSHelperController@resendSMSVerificationPin');
 
-    Route::apiResource('register', 'Api\CustomerController');
+    Route::post('register', 'Api\Customer\Auth\JwtAuthController@register');
 
 
+
+
+    //will secure with JWT Auth
     // Unanimous
     Route::OPTIONS('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
     Route::post('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
@@ -55,7 +59,6 @@ Route::group(['middleware' => ['cors']], function() {
 
     Route::OPTIONS('get-available-promotions', 'Api\Helper\UnanimousHelperController@getAvailablePromotions');
     Route::get('get-available-promotions', 'Api\Helper\UnanimousHelperController@getAvailablePromotions');
-
 
      
     Route::OPTIONS('get-personal-code', 'Api\Helper\UnanimousHelperController@getPersonalCode');
