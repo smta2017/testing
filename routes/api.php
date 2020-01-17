@@ -18,10 +18,11 @@ use Illuminate\Http\Request;
 // });
 // Route::group(['middleware' => ['cors']], function() {
 
-Route::group(['middleware' => ['cors','ApiMiddleware']], function() {
+Route::group(['middleware' => ['cors','LogRequestMiddleware']], function() {
 
     // Customers
     Route::post('login',    'Api\Customer\Auth\JwtAuthController@login');
+    Route::post('register', 'Api\Customer\Auth\JwtAuthController@register');
     Route::post('logout',   'Api\Customer\Auth\JwtAuthController@logout');
     Route::post('refresh',  'Api\Customer\Auth\JwtAuthController@refresh');
     Route::post('me',       'Api\Customer\Auth\JwtAuthController@me');
@@ -38,12 +39,13 @@ Route::group(['middleware' => ['cors','ApiMiddleware']], function() {
  
 
     //Old
-    Route::post('send-sms', 'Api\Helper\SMSHelperController@resendSMSVerificationPin');
+    Route::post('send-sms',     'Api\Helper\SMSHelperController@resendSMSVerificationPin');
     Route::post('verify-phone', 'Api\Helper\SMSHelperController@resendSMSVerificationPin');
 
-    Route::post('register', 'Api\Customer\Auth\JwtAuthController@register');
 
 
+    Route::OPTIONS('get-location', 'Api\Location\LocationController@getLocations');
+    Route::get('get-location', 'Api\Location\LocationController@getLocations');
 
 
     //will secure with JWT Auth
