@@ -163,23 +163,214 @@ class UnanimousHelperController extends Controller
     public function getAvailableSlots(Request $request)
     {
         // $this->authenticate($request);
-        return '{"status":1,"message":"Successfully retrieved time slots against location.","buffer_time":60,"turnaround_time":2640,
-            "pickup_time_slots":[
-                {"date":"Sun 19 Jan","slots":[
-                    {"slot":"05:00 PM - 07:00 PM","order_availability":1}
-                    ]},
-            {"date":"Mon 20 Jan","slots":[
-                    {"slot":"10:00 AM - 12:00 PM","order_availability":1},
-                    {"slot":"12:00 PM - 02:00 PM","order_availability":1},
-                    {"slot":"05:00 PM - 07:00 PM","order_availability":1},
-                    {"slot":"07:00 PM - 09:00 PM","order_availability":1},
-                    {"slot":"09:00 PM - 11:00 PM","order_availability":1}
-                ]},
-            {"date":"Tue 21 Jan","slots":[
-                {"slot":"10:00 AM - 12:00 PM","order_availability":1},
-                {"slot":"12:00 PM - 02:00 PM","order_availability":1},
-                {"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Wed 22 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Thu 23 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Fri 24 Jan","slots":[{"slot":"02:00 PM - 04:00 PM","order_availability":1},{"slot":"08:00 PM - 10:00 PM","order_availability":1}]},{"date":"Sat 25 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Sun 26 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1}]},{"date":"Mon 27 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Tue 28 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Wed 29 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Thu 30 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Fri 31 Jan","slots":[{"slot":"02:00 PM - 04:00 PM","order_availability":1},{"slot":"08:00 PM - 10:00 PM","order_availability":1}]},{"date":"Sat 01 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Sun 02 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1}]},{"date":"Mon 03 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Tue 04 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Wed 05 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Thu 06 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1},{"slot":"09:00 PM - 11:00 PM","order_availability":1}]},{"date":"Fri 07 Feb","slots":[{"slot":"02:00 PM - 04:00 PM","order_availability":1},{"slot":"08:00 PM - 10:00 PM","order_availability":1}]},{"date":"Sat 08 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]}],"delivery_time_slots":[{"date":"Sun 19 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1}]},{"date":"Mon 20 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Tue 21 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Wed 22 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1}]},{"date":"Thu 23 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Fri 24 Jan","slots":[{"slot":"08:00 PM - 10:00 PM","order_availability":1}]},{"date":"Sat 25 Jan","slots":[{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Sun 26 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1}]},{"date":"Mon 27 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Tue 28 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Wed 29 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1}]},{"date":"Thu 30 Jan","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Fri 31 Jan","slots":[{"slot":"08:00 PM - 10:00 PM","order_availability":1}]},{"date":"Sat 01 Feb","slots":[{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Sun 02 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1}]},{"date":"Mon 03 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Tue 04 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Wed 05 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1}]},{"date":"Thu 06 Feb","slots":[{"slot":"10:00 AM - 12:00 PM","order_availability":1},{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]},{"date":"Fri 07 Feb","slots":[{"slot":"08:00 PM - 10:00 PM","order_availability":1}]},{"date":"Sat 08 Feb","slots":[{"slot":"12:00 PM - 02:00 PM","order_availability":1},{"slot":"05:00 PM - 07:00 PM","order_availability":1},{"slot":"07:00 PM - 09:00 PM","order_availability":1}]}]}
-        ';
+        return '{
+            "status": 1,
+            "message": "Successfully retrieved time slots against location.",
+            "buffer_time": 60,
+            "turnaround_time": 2640,
+            "pickup_time_slots": [
+                {
+                    "date": "Sun 19 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Mon 20 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Tue 21 Jan",
+                    "slots": [
+                        {
+                            "slot": "12:00 PM - 02:00 PM",
+                            "order_availability": 1
+                        }
+                    ]
+                },
+                {
+                    "date": "Wed 22 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Thu 23 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Fri 24 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Sat 25 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Sun 26 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Mon 27 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Tue 28 Jan",
+                    "slots": [
+                        {
+                            "slot": "12:00 PM - 02:00 PM",
+                            "order_availability": 1
+                        }
+                    ]
+                },
+                {
+                    "date": "Wed 29 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Thu 30 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Fri 31 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Sat 01 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Sun 02 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Mon 03 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Tue 04 Feb",
+                    "slots": [
+                        {
+                            "slot": "12:00 PM - 02:00 PM",
+                            "order_availability": 1
+                        }
+                    ]
+                },
+                {
+                    "date": "Wed 05 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Thu 06 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Fri 07 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Sat 08 Feb",
+                    "slots": []
+                }
+            ],
+            "delivery_time_slots": [
+                {
+                    "date": "Sun 19 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Mon 20 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Tue 21 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Wed 22 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Thu 23 Jan",
+                    "slots": [
+                        {
+                            "slot": "12:00 PM - 02:00 PM",
+                            "order_availability": 1
+                        }
+                    ]
+                },
+                {
+                    "date": "Fri 24 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Sat 25 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Sun 26 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Mon 27 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Tue 28 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Wed 29 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Thu 30 Jan",
+                    "slots": [
+                        {
+                            "slot": "12:00 PM - 02:00 PM",
+                            "order_availability": 1
+                        }
+                    ]
+                },
+                {
+                    "date": "Fri 31 Jan",
+                    "slots": []
+                },
+                {
+                    "date": "Sat 01 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Sun 02 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Mon 03 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Tue 04 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Wed 05 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Thu 06 Feb",
+                    "slots": [
+                        {
+                            "slot": "12:00 PM - 02:00 PM",
+                            "order_availability": 1
+                        }
+                    ]
+                },
+                {
+                    "date": "Fri 07 Feb",
+                    "slots": []
+                },
+                {
+                    "date": "Sat 08 Feb",
+                    "slots": []
+                }
+            ]
+        }';
 
         $bufferTime= GlobalSetting::select('value')->where('setting_name','buffer_time')->first();
         $turnaroundTime= GlobalSetting::select('value')->where('setting_name','turnaround_time')->first();
