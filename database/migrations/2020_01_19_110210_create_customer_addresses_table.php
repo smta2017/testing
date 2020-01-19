@@ -25,7 +25,7 @@ class CreateCustomerAddressesTable extends Migration
             $table->string('floor_no');
             $table->string('apartment_no');
             $table->text('additional_directions');
-            $table->tinyInteger('is_default');
+            $table->tinyInteger('is_default')->default(0);
             $table->timestamps();
         });
     }
