@@ -46,6 +46,7 @@ class UnanimousHelperController extends Controller
     
     public function getProfile($id = null,Request $request)
     {
+        // $this->authenticate($request);
         
     //    $success_arr= '[{"status":1,"message":"Successfully retrieved customer profile.","customer":{"id":4904,"email":"smta0@yahoo.com","phone":"01274200778","country_code":"2","first_name":"sameh","last_name":"taha","jwt_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLm1ha3dhYXBwLmNvbVwvYXBpXC9yZWdpc3RlciIsImlhdCI6MTU3OTExMjUxMiwiZXhwIjoxNTc5MTE2MTEyLCJuYmYiOjE1NzkxMTI1MTIsImp0aSI6IlhTVkV1dGJ5TjZHMDN5WXMiLCJzdWIiOm51bGwsInBydiI6IjhiNDIyZTZmNjU3OTMyYjhhZWJjYjFiZjFlMzU2ZGQ3NmEzNjViZjIifQ.PsnYb61hmLFlzlOT1elC8aMfkzA3EKHcHrQcP1c0sFk","is_signedOut":1,"number_of_orders":0,"total_items_sent":null,"total_amount_spent":null,"version_no":"1.3.4"},"address":[],"preference":[]}"]';
 
@@ -79,6 +80,8 @@ class UnanimousHelperController extends Controller
    
     public function getOrders(Request $request)
     {
+        // $this->authenticate($request);
+
         $success_arr = array(
             "status" => 1,
             "message" => "Successfully retrieved orders against customer.",
@@ -96,6 +99,7 @@ class UnanimousHelperController extends Controller
 
 
     public function getAvailablePromotions(Request $request) {
+        // $this->authenticate($request);
           
         $success_arr = array(
             'status' => 1,
@@ -145,6 +149,8 @@ class UnanimousHelperController extends Controller
     }
 
     public function getPersonalCode(Request $request) {
+
+        // $this->authenticate($request);
 
         $success_arr = array(
             'status' => 1,

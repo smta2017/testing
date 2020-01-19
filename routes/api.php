@@ -50,11 +50,16 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
 
     //will secure with JWT Auth
     // Unanimous
-    Route::OPTIONS('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
-    Route::post('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
     
     Route::OPTIONS('get-customer-profile/{id?}', 'Api\Helper\UnanimousHelperController@getProfile');
     Route::get('get-customer-profile/{id?}',     'Api\Helper\UnanimousHelperController@getProfile');
+
+    Route::OPTIONS('add-customer-address', 'CustomerAddressController@store');
+    Route::post('add-customer-address', 'CustomerAddressController@store');
+
+    Route::OPTIONS('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
+    Route::post('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
+    
 
     Route::OPTIONS('get-orders', 'Api\Helper\UnanimousHelperController@getOrders');
     Route::get('get-orders', 'Api\Helper\UnanimousHelperController@getOrders');
