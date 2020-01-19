@@ -54,8 +54,8 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
     Route::OPTIONS('get-customer-profile/{id?}', 'Api\Helper\UnanimousHelperController@getProfile');
     Route::get('get-customer-profile/{id?}',     'Api\Helper\UnanimousHelperController@getProfile');
 
-    Route::OPTIONS('add-customer-address', 'CustomerAddressController@store');
-    Route::post('add-customer-address', 'CustomerAddressController@store');
+    Route::OPTIONS('add-customer-address', 'Api\Address\CustomerAddressController@store');
+    Route::post('add-customer-address', 'Api\Address\CustomerAddressController@store');
 
     Route::OPTIONS('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
     Route::post('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
