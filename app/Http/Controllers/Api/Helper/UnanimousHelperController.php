@@ -71,7 +71,18 @@ class UnanimousHelperController extends Controller
                     "total_amount_spent" =>null,
                     "version_no" =>"1.3.4",
                     ],
-            'address'=>[],
+            'address'=> [
+                "id" => 1337,
+                "latitude" => 30.036899999999999266719896695576608180999755859375,
+                "longitude" => 31.4284999999999996589394868351519107818603515625,
+                "building_no" => "building_no_sameh",
+                "street_address" => "street_addresswertugcf",
+                "floor_no" => "012",
+                "apartment_no" => "rrr",
+                "address_type" => "home",
+                "additional_directions" => "dddt",
+                "is_default" => 1
+                ],
             "preference"=>[]
             
         );
