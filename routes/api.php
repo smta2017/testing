@@ -44,32 +44,15 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
 
 
 
-    Route::OPTIONS('get-location', 'Api\Location\LocationController@getLocations');
-    Route::get('get-location', 'Api\Location\LocationController@getLocations');
-
+    Route::get('get-location', 'Api\Location\LocationController@getLocations');    Route::OPTIONS('get-location', 'Api\Location\LocationController@getLocations');
 
     //will secure with JWT Auth
     // Unanimous
-    
-    Route::OPTIONS('get-customer-profile/{id?}', 'Api\Helper\UnanimousHelperController@getProfile');
-    Route::get('get-customer-profile/{id?}',     'Api\Helper\UnanimousHelperController@getProfile');
-
-    Route::OPTIONS('add-customer-address', 'Api\Address\CustomerAddressController@store');
-    Route::post('add-customer-address', 'Api\Address\CustomerAddressController@store');
-
-    Route::OPTIONS('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
-    Route::post('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
-    
-
-    Route::OPTIONS('get-orders', 'Api\Helper\UnanimousHelperController@getOrders');
-    Route::get('get-orders', 'Api\Helper\UnanimousHelperController@getOrders');
-
-    Route::OPTIONS('get-available-promotions', 'Api\Helper\UnanimousHelperController@getAvailablePromotions');
-    Route::get('get-available-promotions', 'Api\Helper\UnanimousHelperController@getAvailablePromotions');
-
-     
-    Route::OPTIONS('get-personal-code', 'Api\Helper\UnanimousHelperController@getPersonalCode');
-    Route::get('get-personal-code', 'Api\Helper\UnanimousHelperController@getPersonalCode');
+    Route::post('/updateSignedOutStatus',   'Api\Helper\UnanimousHelperController@updateSignedOut');    Route::OPTIONS('/updateSignedOutStatus', 'Api\Helper\UnanimousHelperController@updateSignedOut');
+    Route::get('get-available-promotions',  'Api\Helper\UnanimousHelperController@getAvailablePromotions');    Route::OPTIONS('get-available-promotions', 'Api\Helper\UnanimousHelperController@getAvailablePromotions');
+    Route::get('get-customer-profile/{id?}',    'Api\Helper\UnanimousHelperController@getProfile');    Route::OPTIONS('get-customer-profile/{id?}', 'Api\Helper\UnanimousHelperController@getProfile');
+    Route::get('get-personal-code',         'Api\Helper\UnanimousHelperController@getPersonalCode');    Route::OPTIONS('get-personal-code', 'Api\Helper\UnanimousHelperController@getPersonalCode');
+    Route::get('get-orders',                'Api\Helper\UnanimousHelperController@getOrders');     Route::OPTIONS('get-orders', 'Api\Helper\UnanimousHelperController@getOrders');    
 
 
 });
