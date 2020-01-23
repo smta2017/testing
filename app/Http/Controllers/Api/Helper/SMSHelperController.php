@@ -9,15 +9,7 @@ class SMSHelperController extends Controller
 {
    
     public function resendSMSVerificationPin(Request $request)
-    {
-        // dd($request['country_code'].$request['phone']);
-
-        // $request->validate([
-        //     'phone' => 'required|unique:customers',
-        //     'country_code' => 'required',
-        // ]);
-        
-        // Log::error('resendVerificationCode', ['request' => $request->all()]);
+    { 
         $USER_PHONE = $request['phone'];
         $COUNTRY_CODE=$request['country_code'];
         if (!$USER_PHONE=="01274200778") {
@@ -60,8 +52,6 @@ class SMSHelperController extends Controller
         $result1 = json_decode($result);
     }
 
-        // print_r($result);
-        // die();
         if($USER_PHONE=="01274200778" || $result1->success)
         {
             $send_code=array(

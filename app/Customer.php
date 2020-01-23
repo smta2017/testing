@@ -16,7 +16,7 @@ class Customer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 
+        // 'name', 
         'first_name',
         'last_name',
         'phone',
@@ -61,5 +61,20 @@ class Customer extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function CustomerAddresses()
+    {
+    	return $this->hasMany('App\CustomerAddress');
+    }
+
+    public function CustomerPreferencies()
+    {
+    	return $this->hasMany('App\CustomerPreference');
+    }
+
+    public function Orders()
+    {
+    	return $this->hasMany('App\Order');
     }
 }
