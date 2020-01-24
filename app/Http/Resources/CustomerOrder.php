@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Order as Order;
+use App\Http\Resources\Order as OrderResource;
 
 class CustomerOrder extends JsonResource
 {
@@ -18,7 +18,7 @@ class CustomerOrder extends JsonResource
         return[
             "status" => 1,
             "message" => "Successfully retrieved orders against customer.",
-            "orders" =>Order::collection($this->Orders),
+            "orders" => OrderResource::collection($this->Orders),
             "cancellation_fee" => $this->cancellation_fee,
             "cancellation_buffer" => $this->cancellation_buffer,
             "pickupRescStartBuffer" => $this->pickupRescStartBuffer,
