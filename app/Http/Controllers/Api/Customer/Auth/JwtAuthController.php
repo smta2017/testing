@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api\Customer\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Helper\EmailHelperController;
 use Illuminate\Http\Request;
 use App\Customer;
 use Hash;
@@ -31,28 +32,35 @@ class JwtAuthController extends Controller
         if (! $token = auth('customer-api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
-        return $this->respondWithToken($token);
+        $customer =  $this->guard()->user();
+        $customer->jwt_token = $token;
+        return response()->json([
+            "status" => 1,
+            "message" => "Customer Logged In Successfully.",
+            'access_token' => $token,
+            'customer'=> $customer,
+            'token_type' => 'bearer',
+            'expires_in' => auth('customer-api')->factory()->getTTL() * 60
+        ]);
+        // return $this->respondWithToken($token);
     }
-    
-
 
     public function register(Request $request)
     {
-       // need to use laravel validate !!!
-        if (!$request['phone']=="01274200778") {
-            if (!empty($request['phone']) && isset($request['phone'])) {
+        // need to use laravel validate !!!
+        if (!empty($request['phone']) && isset($request['phone'])) {
+            if (!$request['phone']=="01274200778") { //for testing only
                 if (Customer::where('phone', $request['phone'])->exists()) {
                     return $this->handelReturnResultFail("This phone is already been used.");
                 }
-            }else{
-                return $this->handelReturnResultFail("Parameter missing - phone Number and country code should not be empty.");
             }
+        }else{
+            return $this->handelReturnResultFail("Parameter missing - phone Number and country code should not be empty.");
         }
-        
+    
         if (!empty($request['email']) && isset($request['email'])) {
             if (Customer::where('email', $request['email'])->exists()) {
-                return $this->handelReturnResultFail("This Email is already been used.");
+                        return $this->handelReturnResultFail("This Email is already been used.");
             }
         }else{
             return $this->handelReturnResultFail("Parameter missing - email Number and country code should not be empty.");
@@ -61,8 +69,6 @@ class JwtAuthController extends Controller
         if (empty($request['password']) && !isset($request['password'])) {
             return $this->handelReturnResultFail("Parameter missing - password Number and country code should not be empty.");
         }
-        // need to use laravel validate !!!
-
 
         $customer = Customer::create([
             'name'          => $request['first_name'] . " " . $request['last_name'],
@@ -74,7 +80,6 @@ class JwtAuthController extends Controller
             'password'      => Hash::make($request['password']),
         ]);
 
-        // $customer->jwt_token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLm1ha3dhYXBwLmNvbVwvYXBpXC9yZWdpc3RlciIsImlhdCI6MTU3OTEwNzY5MSwiZXhwIjoxNTc5MTExMjkxLCJuYmYiOjE1NzkxMDc2OTEsImp0aSI6IllqaXQ4U1o2dGpmaFZrM0MiLCJzdWIiOm51bGwsInBydiI6IjhiNDIyZTZmNjU3OTMyYjhhZWJjYjFiZjFlMzU2ZGQ3NmEzNjViZjIifQ.4osCMqhgnhN3g_nbBhQeXS6Vt1IyBQZZs7A9qiPZav4';
         $customer->jwt_token=  auth('customer-api')->login($customer);
 
         $success_msg=array(
@@ -82,13 +87,12 @@ class JwtAuthController extends Controller
             "message" => "Welcome Aboard, Account registered successfully.",
             "customer"=>$customer,
         );
-        return json_encode($success_msg);
-
-        // return redirect()->intended('login/customer');
         
+        $email_helper =  EmailHelperController::sendWelcomeEmail($customer->email);
+        
+        return json_encode($success_msg);
+        // return redirect()->intended('login/customer');
     }
-
-    
 
 
     /**
@@ -135,6 +139,7 @@ class JwtAuthController extends Controller
             'expires_in' => auth('customer-api')->factory()->getTTL() * 60
         ]);
     }
+
     public function guard() {
         return \Auth::Guard('customer-api');
     }

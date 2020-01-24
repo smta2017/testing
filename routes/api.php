@@ -62,5 +62,7 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
     Route::OPTIONS('/get-customer-profile/{id?}','Api\Helper\UnanimousHelperController@getCustomerProfile');
     Route::OPTIONS('/get-personal-code',         'Api\Helper\UnanimousHelperController@getPersonalCode');
     Route::OPTIONS('/get-orders',                'Api\Helper\UnanimousHelperController@getCustomerOrders');
-    Route::OPTIONS('/get-time-slots',            'Api\TimeStlot\TimeSlotController@getAvailableSlots');              
+    Route::OPTIONS('/get-time-slots',            'Api\TimeStlot\TimeSlotController@getAvailableSlots'); 
+    Route::OPTIONS('/place-order',               'Api\Order\OrderController@store');
+
 });
