@@ -477,7 +477,7 @@ class OrderController extends Controller
 
                 $order=array(
                     'order_id'=>$order->id,
-                    'status'=>$order->status,
+                    'status'=>$order->status_id,
                     'address_id' => $order->address_id,
                     'total_price'=> $order_total,
                     'delivery_fee'=>$order->delivery_fee,
