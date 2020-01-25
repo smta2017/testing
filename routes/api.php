@@ -29,7 +29,7 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
         Route::post('me',       'Api\Customer\Auth\JwtAuthController@me');
     // });
 
-
+    // Admin
     // Route::group([ 'prefix' => 'admin'], function ($router) {
     //     Route::post('login', 'Api\Auth\AdminAuthController@login');
     //     Route::post('logout', 'Api\Auth\AdminAuthController@logout');
@@ -41,12 +41,12 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
     Route::post('send-sms',                     'Api\Helper\SMSHelperController@resendSMSVerificationPin');
     Route::post('verify-phone',                 'Api\Helper\SMSHelperController@resendSMSVerificationPin');
 
-    
     Route::group(['middleware' => ['JwtClientAuth']], function() {
         Route::get('/get-time-slots',            'Api\TimeStlot\TimeSlotController@getAvailableSlots');
         Route::get('/get-location',              'Api\Location\LocationController@getLocations');
         Route::post('/place-order',              'Api\Order\OrderController@store');
-        
+        Route::post('/add-customer-address',     'Api\Address\CustomerAddressController@store');
+
         // Unanimous controller secify
         Route::post('/updateSignedOutStatus',    'Api\Helper\UnanimousHelperController@updateSignedOut');
         Route::get('/get-available-promotions',  'Api\Helper\UnanimousHelperController@getAvailablePromotions');
@@ -56,6 +56,7 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
 
     });
     // will remove in future
+    Route::OPTIONS('/add-customer-address',      'Api\Address\CustomerAddressController@store');
     Route::OPTIONS('/get-location',              'Api\Location\LocationController@getLocations');
     Route::OPTIONS('/updateSignedOutStatus',     'Api\Helper\UnanimousHelperController@updateSignedOut');
     Route::OPTIONS('/get-available-promotions',  'Api\Helper\UnanimousHelperController@getAvailablePromotions');
@@ -64,5 +65,12 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
     Route::OPTIONS('/get-orders',                'Api\Helper\UnanimousHelperController@getCustomerOrders');
     Route::OPTIONS('/get-time-slots',            'Api\TimeStlot\TimeSlotController@getAvailableSlots'); 
     Route::OPTIONS('/place-order',               'Api\Order\OrderController@store');
+
+    Route::OPTIONS('/get-services',              'Api\Order\OrderController@index');
+    Route::OPTIONS('/get-services-names',              'Api\Order\OrderController@index');
+    Route::OPTIONS('/delete-customer-address',              'Api\Order\OrderController@index');
+    Route::OPTIONS('/cancel-order',              'Api\Order\OrderController@index');
+
+        
 
 });

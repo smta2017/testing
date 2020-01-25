@@ -16,7 +16,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return json_encode(array('status' => 0), JSON_NUMERIC_CHECK);
     }
 
     /**
