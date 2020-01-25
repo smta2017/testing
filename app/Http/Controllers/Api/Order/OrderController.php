@@ -6,7 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\GlobalSetting;
 use App\Order;
+use App\OrderProduct;
+use App\Http\Resources\OrderFastPreference as ResourcesOrderFastPreference;
+use App\Http\Resources\ProductDetail;
+use App\OrderFastPreference;
 use App\Promotion;
+use App\Service;
+use DB;
+
 class OrderController extends Controller
 {
     /**
@@ -430,9 +437,94 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+
+        if(!$request->has('order_id')){
+            $failure_arr = array(
+                'status' => 0,
+                'message' => 'Parameter Missing - order_id should not be empty.',
+            );
+            return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $request->validate([
+                'order_id' => 'numeric|required|min:4|max:999998',
+            ]);
+
+            $orderId = $request->input('order_id');
+            $order= Order::find($orderId);
+            if(!empty($order))
+            {
+                $price= DB::select('select sum(product_price*product_count) as price from order_products where order_id = '. $orderId)[0]->price;
+               
+                $OrderProducts=$order->OrderProducts->groupBy('service_id');
+                $orderDetails = ProductDetail::collection($OrderProducts);
+                $orderPreference= ResourcesOrderFastPreference::collection($order->OrderFastPreferencies);
+                $order_total = $price+$order->delivery_fee+$order->tax_amount-$order->discount_amount - $order->promotion_discount + $order->service_fee + $order->cancellation_fee + $order->reschedule_fee;
+
+                if ($order_total < 0) {
+                    $order_total = 0;
+                }
+
+                $cancellationBuffer = GlobalSetting::select('value')->where('setting_name','cancellation_buffer')->first();
+                $cancellation = GlobalSetting::select('value')->where('setting_name','cancellation_fee')->first();
+                $pickupStartBuffer = GlobalSetting::select('value')->where('setting_name','rescheduling_buffer_start')->first();
+                $pickupEndBuffer = GlobalSetting::select('value')->where('setting_name','rescheduling_buffer_end')->first();
+                $rescheduling_fee = GlobalSetting::select('value')->where('setting_name','rescheduling_fee')->first();
+                $cancellation=$cancellation->value;
+
+                $order=array(
+                    'order_id'=>$order->id,
+                    'status'=>$order->status,
+                    'address_id' => $order->address_id,
+                    'total_price'=> $order_total,
+                    'delivery_fee'=>$order->delivery_fee,
+                    'tax_amount'=>$order->tax_amount,
+                    'discount_amount'=>$order->discount_amount,
+                    'promotion_discount'=>$order->promotion_discount,
+                    'order_cancel'=>$order->cancellation_fee,
+                    'order_reschedule'=>$order->reschedule_fee,
+                    'sub_total'=>$price,
+                    'service_fee'=>$order->service_fee,
+                    'method_of_payment'=>$order->method_of_payment,
+                    'pickup_date'=>$order->pickup_date,
+                    'pickup_start'=>$order->pickup_start,
+                    'pickup_end'=>$order->pickup_end,
+                    'delivery_date'=>$order->delivery_date,
+                    'delivery_start'=>$order->delivery_start,
+                    'delivery_end'=>$order->delivery_end,
+                    'is_rated'=>$order->is_rated,
+                    'created_at'=>date('Y-m-d H:i:s',strtotime($order->created_at)),
+                    'address'=>$order->CustomerAddress,
+                    'details'=>$orderDetails,
+                    'order_preference'=>$orderPreference,
+                    'delivery_raw_end'=>$order->delivery_date.' '.$order->delivery_end ,
+                    'pickup_raw_start'=>$order->pickup_date.' '.$order->pickup_start ,
+                    'cancellation_fee'=>$cancellation,
+                    'cancellation_buffer'=>$cancellationBuffer,
+                    'pickupRescStartBuffer'=>$pickupStartBuffer->value,
+                    'deliveryRescEndBuffer'=>$pickupEndBuffer->value,
+                    'rescheduling_fee'=>$rescheduling_fee->value
+                );
+                $success_arr = array(
+                    'status' => 1,
+                    'message' => 'Successfully retrieved order details.',
+                    'order'=>$order,
+                );
+                
+                return json_encode($success_arr, JSON_NUMERIC_CHECK);
+            }
+            else
+            {
+                $failure_arr = array(
+                    'status' => 0,
+                    'message' => 'No Order found against this ID.',
+                );
+                return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+            }
+        }
     }
 
     /**

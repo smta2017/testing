@@ -37,15 +37,23 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
     //     Route::post('me', 'Api\Auth\AdminAuthController@me');
     // });
 
-    //Old
+    //Geniral - Old
     Route::post('send-sms',                     'Api\Helper\SMSHelperController@resendSMSVerificationPin');
     Route::post('verify-phone',                 'Api\Helper\SMSHelperController@resendSMSVerificationPin');
 
     Route::group(['middleware' => ['JwtClientAuth']], function() {
-        Route::get('/get-time-slots',            'Api\TimeStlot\TimeSlotController@getAvailableSlots');
+        // Locations
         Route::get('/get-location',              'Api\Location\LocationController@getLocations');
+        
+        // Orders
         Route::post('/place-order',              'Api\Order\OrderController@store');
+        Route::get('/get-order-details',         'Api\Order\OrderController@show');
+
+        // Addresses
         Route::post('/add-customer-address',     'Api\Address\CustomerAddressController@store');
+        
+        // Time slots
+        Route::get('/get-time-slots',            'Api\TimeStlot\TimeSlotController@getAvailableSlots');
 
         // Unanimous controller secify
         Route::post('/updateSignedOutStatus',    'Api\Helper\UnanimousHelperController@updateSignedOut');
@@ -53,8 +61,8 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
         Route::get('/get-customer-profile/{id?}','Api\Helper\UnanimousHelperController@getCustomerProfile');
         Route::get('/get-orders',                'Api\Helper\UnanimousHelperController@getCustomerOrders');
         Route::get('/get-personal-code',         'Api\Helper\UnanimousHelperController@getPersonalCode');
-
     });
+
     // will remove in future
     Route::OPTIONS('/add-customer-address',      'Api\Address\CustomerAddressController@store');
     Route::OPTIONS('/get-location',              'Api\Location\LocationController@getLocations');
@@ -67,10 +75,9 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
     Route::OPTIONS('/place-order',               'Api\Order\OrderController@store');
 
     Route::OPTIONS('/get-services',              'Api\Order\OrderController@index');
-    Route::OPTIONS('/get-services-names',              'Api\Order\OrderController@index');
-    Route::OPTIONS('/delete-customer-address',              'Api\Order\OrderController@index');
+    Route::OPTIONS('/get-services-names',        'Api\Order\OrderController@index');
+    Route::OPTIONS('/delete-customer-address',   'Api\Order\OrderController@index');
     Route::OPTIONS('/cancel-order',              'Api\Order\OrderController@index');
-
-        
+    Route::OPTIONS('/get-order-details',         'Api\Order\OrderController@index');
 
 });

@@ -11,6 +11,12 @@ class Order extends Model
     	return $this->hasMany('App\OrderProduct');
     }
 
+    public function OrderFastPreferencies()
+    {
+    	return $this->hasMany('App\OrderFastPreference');
+    }
+    
+    // -----------
     public function Customer()
     {
 		  return $this->belongsTo('App\Customer');
