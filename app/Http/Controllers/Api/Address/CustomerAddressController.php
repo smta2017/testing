@@ -26,19 +26,19 @@ class CustomerAddressController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'order_id' => 'numeric|required|min:4|max:999998',
-            'building_no'=>'max:99',
-            'street_address'=>'max:255',
-            'floor_no'=>'max:99',
-            'apartment_no'=>'max:99',
-            'additional_directions'=>'max:255',
-            'latitude' => 'required|regex:^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$',
-            'longitude' => 'required|regex:^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$',
-            'location_id'=>'required|numeric',
-            'customer_id'=>'required|numeric',
-            'type_id'=>'required|numeric',
-        ]);
+        // $request->validate([
+        //     'order_id' => 'numeric|required|min:4|max:999998',
+        //     'building_no'=>'max:99',
+        //     'street_address'=>'max:255',
+        //     'floor_no'=>'max:99',
+        //     'apartment_no'=>'max:99',
+        //     'additional_directions'=>'max:255',
+        //     'latitude' => 'required|regex:^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$',
+        //     'longitude' => 'required|regex:^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$',
+        //     'location_id'=>'required|numeric',
+        //     'customer_id'=>'required|numeric',
+        //     'type_id'=>'required|numeric',
+        // ]);
 
         $customerAddress=new CustomerAddress();
         if(isset($request['customer_id']) && isset($request['type_id']) && !empty($request['customer_id']) && !empty($request['type_id']))
