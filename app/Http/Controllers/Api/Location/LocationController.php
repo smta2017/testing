@@ -108,9 +108,9 @@ class LocationController extends Controller
        
         $query=DB::select('
    
-        SELECT locations.*, ( 6371000 * acos( cos( radians('.$my_lat.') ) * cos( radians( latitude ) ) * 
+        SELECT location.*, ( 6371000 * acos( cos( radians('.$my_lat.') ) * cos( radians( latitude ) ) * 
         cos( radians( longitude ) - radians('.$my_long.') ) + sin( radians('.$my_lat.') ) * 
-        sin( radians( latitude ) ) ) ) AS distance FROM locations where is_archive = 0 and ( 6371000 * acos( cos( radians('.$my_lat.') ) * cos( radians( latitude ) ) * 
+        sin( radians( latitude ) ) ) ) AS distance FROM location where is_archive = 0 and ( 6371000 * acos( cos( radians('.$my_lat.') ) * cos( radians( latitude ) ) * 
         cos( radians( longitude ) - radians('.$my_long.') ) + sin( radians('.$my_lat.') ) * 
         sin( radians( latitude ) ) ) ) <= '.$meters['value'].'
          order by distance limit 1');
