@@ -10,4 +10,9 @@ class Service extends Model
     {
     	return $this->hasMany('App\OrderProduct');
     }
+    
+    public function ProductPrices()
+    {
+    	return $this->hasMany('App\ProductPrice');
+    }
 }

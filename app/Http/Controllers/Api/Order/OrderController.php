@@ -12,6 +12,7 @@ use App\Http\Resources\ProductDetail;
 use App\OrderFastPreference;
 use App\Promotion;
 use App\Service;
+use Carbon\Carbon;
 use DB;
 
 class OrderController extends Controller
@@ -548,6 +549,21 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //====================== Helper ==========================
+
+    public function cancelOrder(Request $request) {
+        $request=json_decode($request->getContent(),true);
+        $orderId=$request['id'];
+        $order=Order::find($orderId);
+        $order->canceled_at=  Carbon::now()->toDateTimeString();
+        $order->save();
+        $success_arr=array(
+                "status" => 1,
+                "message" => "Order has been cancelled."
+            );
+        return json_encode($success_arr,JSON_NUMERIC_CHECK);
     }
 
     public function handelReturnResultFail($msg)

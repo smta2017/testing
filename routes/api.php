@@ -48,12 +48,18 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
         // Orders
         Route::post('/place-order',              'Api\Order\OrderController@store');
         Route::get('/get-order-details',         'Api\Order\OrderController@show');
+        Route::post('/cancel-order',              'Api\Order\OrderController@cancelOrder');
 
         // Addresses
         Route::post('/add-customer-address',     'Api\Address\CustomerAddressController@store');
         
         // Time slots
         Route::get('/get-time-slots',            'Api\TimeStlot\TimeSlotController@getAvailableSlots');
+        
+        // Services
+        Route::get('/get-services',            'Api\Service\ServiceController@show');
+        Route::get('/get-services-names',      'Api\Service\ServiceController@index');
+        
 
         // Unanimous controller secify
         Route::post('/updateSignedOutStatus',    'Api\Helper\UnanimousHelperController@updateSignedOut');
@@ -79,5 +85,7 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
     Route::OPTIONS('/delete-customer-address',   'Api\Order\OrderController@index');
     Route::OPTIONS('/cancel-order',              'Api\Order\OrderController@index');
     Route::OPTIONS('/get-order-details',         'Api\Order\OrderController@index');
+    Route::OPTIONS('/get-services-names',        'Api\Order\OrderController@index');
+    Route::OPTIONS('/cancel-order',              'Api\Order\OrderController@index');
 
 });

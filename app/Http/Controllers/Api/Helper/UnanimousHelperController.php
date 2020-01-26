@@ -52,11 +52,11 @@ class UnanimousHelperController extends Controller
         $id=$request["CustomerId"];
         $Customer = Customer::find($id);
         $globalSetting =GlobalSetting::all();
-        $Customer->cancellation_fee = $globalSetting->where('setting_name','cancellation_buffer')->first()->value;
-        $Customer->cancellation_buffer = $globalSetting->where('setting_name','cancellation_fee')->first()->value;
-        $Customer->pickupRescStartBuffer = $globalSetting->where('setting_name','rescheduling_buffer_start')->first()->value;
-        $Customer->deliveryRescEndBuffer = $globalSetting->where('setting_name','rescheduling_buffer_end')->first()->value;
-        $Customer->rescheduling_fee = $globalSetting->where('setting_name','rescheduling_fee')->first()->value;
+        $Customer->cancellation_fee         = $globalSetting->where('setting_name','cancellation_buffer')->first()->value;
+        $Customer->cancellation_buffer      = $globalSetting->where('setting_name','cancellation_fee')->first()->value;
+        $Customer->pickupRescStartBuffer    = $globalSetting->where('setting_name','rescheduling_buffer_start')->first()->value;
+        $Customer->deliveryRescEndBuffer    = $globalSetting->where('setting_name','rescheduling_buffer_end')->first()->value;
+        $Customer->rescheduling_fee         = $globalSetting->where('setting_name','rescheduling_fee')->first()->value;
         return new CustomerOrderResource($Customer);
     }
 

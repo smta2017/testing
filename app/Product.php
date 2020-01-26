@@ -10,4 +10,14 @@ class Product extends Model
     {
     	return $this->hasMany('App\OrderProduct');
     }
+
+    public function ProductPrices()
+    {
+    	return $this->hasMany('App\ProductPrice');
+    }
+
+    public function CustomerPreference()
+    {
+    	return $this->hasMany('App\CustomerPreference');
+    }
 }
