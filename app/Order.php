@@ -24,7 +24,7 @@ class Order extends Model
 
     public function OrderStatus()
     {
-		  return $this->belongsTo('App\OrderStatus');
+		  return $this->belongsTo('App\OrderStatus','status_id');
     }
     
     public function CustomerAddress()

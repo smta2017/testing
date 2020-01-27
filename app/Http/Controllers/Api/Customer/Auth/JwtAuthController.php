@@ -5,9 +5,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\Helper\EmailHelperController;
 use Illuminate\Http\Request;
 use App\Customer;
+use App\ResetPassword;
 use Hash;
-use JWTFactory;
-use JWTAuth;
+use Mail;
+use DB;
+
 class JwtAuthController extends Controller
 {
     /**
@@ -156,5 +158,58 @@ class JwtAuthController extends Controller
             "message" => $msg
             );
             return json_encode($failure_array,JSON_NUMERIC_CHECK);  
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $customer=Customer::select('id','first_name','email','jwt_token')
+            ->where('email',$request['email'])
+            ->first();
+        
+        
+        if(empty($customer))
+        {
+            $failure_msg=array(
+                "status" => 0,
+                "message" => "No customer found against this email.",
+            );
+            return json_encode($failure_msg,JSON_NUMERIC_CHECK);    
+        }
+        $deletePasswordReset=ResetPassword::where('email',$request['email'])->delete();
+        $passwordReset=new ResetPassword();
+        $passwordReset->email=$request->email;
+        $passwordReset->token=md5($customer->first_name.$customer->email.$customer->jwt_token.date('Y-m-d H:i:s'));
+        $passwordReset->created_at=date('Y-m-d H:i:s');
+        $passwordReset->save();
+        $customer->token=md5($customer->first_name.$customer->email.$customer->jwt_token.date('Y-m-d H:i:s'));
+        $data = array (
+                    'customer'=>$customer,
+                );
+        Mail::send ( 'emails.passwordreset', $data, function ($message) use($customer) {
+            $message->from ( 'noreply@makwaapp.com', 'Makwa' );
+            $message->to ( $customer->email )->subject ( 'Password Reset Email' );
+        } );
+
+        $success_msg=array(
+                "status" => 1,
+                "message" => "Email has been sent.",
+                "customer"=>$customer,
+        );
+
+        return json_encode($success_msg);
+    }
+
+    public function resetPassword($token)
+    {
+            $customer=ResetPassword::select(DB::raw('email'))
+                    ->where('token',$token)->first();
+            if(empty($customer))
+            {
+                return abort(404);
+            }
+            else
+            {
+                return view('resetpassword',['email'=>$customer->email]);
+            }
     }
 }

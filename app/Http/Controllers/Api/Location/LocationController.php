@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Location;
 use DB;
 use App\GlobalSetting;
+use App\NotifyLocation;
 
 class LocationController extends Controller
 {
@@ -133,8 +134,65 @@ class LocationController extends Controller
             return json_encode($success_arr, JSON_NUMERIC_CHECK);
         }
 
-    
+    }
 
-
+    public function notifyLocation(Request $request)
+    {
+        $request=json_decode($request->getContent(),true);
+        $notifyLocation=new NotifyLocation();
+        if(!isset($request['customer_id']) || empty($request['customer_id']))
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "Parameter missing -  customer_id should not be empty."
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $notifyLocation->customer_id=$request['customer_id'];
+        }
+        if(!isset($request['latitude']) || empty($request['latitude']))
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "Parameter missing -  latitude should not be empty."
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $notifyLocation->latitude=$request['latitude'];
+        }
+        if(!isset($request['longitude']) || empty($request['longitude']))
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "Parameter missing -  longitude should not be empty."
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $notifyLocation->longitude=$request['longitude'];
+        }
+        if(!isset($request['address']) || empty($request['address']))
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "Parameter missing -  address should not be empty."
+            );
+            // return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $notifyLocation->address=$request['address'];
+        }
+        $notifyLocation->save();
+        $success_arr=array(
+                "status" => 1,
+                "message" => "Address has been saved for Notification."
+            );
+        return json_encode($success_arr,JSON_NUMERIC_CHECK);
     }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api\Order;
 
+use App\Customer;
+use App\CustomerAddress;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\GlobalSetting;
+use App\Http\Resources\CustomerAddress as ResourcesCustomerAddress;
 use App\Order;
 use App\OrderProduct;
 use App\Http\Resources\OrderFastPreference as ResourcesOrderFastPreference;
@@ -55,6 +58,8 @@ class OrderController extends Controller
         if(!isset($order['address_id']) || empty($order['address_id']))
         {
             return $this->handelReturnResultFail("Parameter missing -  address should not be empty.");
+        }else{
+            $newOrder->address_id=$order['address_id'];
         }
         
         if(isset($order['total_price']) && !empty($order['total_price']))
@@ -432,6 +437,158 @@ class OrderController extends Controller
         }
     }
 
+    public function show_old(Request $request)
+    {
+        
+        // $this->authenticate($request);
+        $price=0;
+        if(!$request->has('order_id'))
+        {
+            $failure_arr = array(
+                'status' => 0,
+                'message' => 'Parameter Missing - order_id should not be empty.',
+                            
+            );
+            return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+                        
+
+        }
+        else
+        {
+            $orderId =$request->input('order_id');
+            $order= Order::select('id','address_id')->where('id',$orderId)->first();
+            if(!empty($order))
+            {
+                $addressId=$order->address_id;
+                // return $addressId;
+                $order=Order::selectRaw('orders.id,CONCAT(UCASE(LEFT(REPLACE(order_statuses.name,"_"," "), 1)), 
+                    SUBSTRING(REPLACE(order_statuses.name,"_"," "), 2)) as status,
+                    orders.total_price,orders.delivery_fee,orders.tax_amount,orders.discount_amount,orders.promotion_discount,
+                    orders.sub_total,orders.service_fee,orders.cancellation_fee,orders.reschedule_fee,orders.method_of_payment,orders.pickup_date,
+                    orders.pickup_start,orders.pickup_end,orders.delivery_date,orders.delivery_start,
+                    orders.delivery_end,orders.is_rated,orders.created_at')
+                    ->leftJoin('order_statuses','order_statuses.id','orders.status_id')
+                    ->where('orders.id',$orderId)->first();
+                $address = CustomerAddress::selectRaw('customer_address.id as address_id,latitude,location_id,longitude,building_no,street_address,floor_no,apartment_no,
+                    address_type.name as address_type,additional_directions,is_default')
+                    ->Join('address_type', 'customer_address.type_id', 'address_type.id')
+                    ->where('customer_address.id',$addressId)->first();
+                    // return $address;
+                $services= Service::all();
+                $i=0;
+                $orderDetails=array();
+                $pricearr=array();
+                foreach($services as $service)
+                {
+                    // return $orderId;
+                    // return $service->id;
+                    $query=DB::select('select products.name as product_name,
+                    order_products.product_count,order_products.product_price,order_products.product_price*order_products.product_count as product_total
+                    from orders left join order_products on order_products.order_id=orders.id 
+                    left join services on services.id=order_products.service_id
+                    left join products on order_products.product_id=products.id
+                    where orders.id='.$orderId.' and order_products.service_id='.$service->id.' group by 
+                    products.name,order_products.id,order_products.product_count,order_products.product_price');
+                    $service_name=ucwords((str_replace("_"," ",$service->name)));
+                    // return $query;
+                    
+                    if(!empty($query))
+                    {
+                        
+                        $orderDetails[$i]=array(
+                            'service'=>$service_name,
+                            'products'=>$query
+                        );
+                        $i++;
+                    }
+                }
+                $price=$query=DB::select('select orders.id,
+                    sum(order_products.product_count *order_products.product_price) as price
+                    from orders left join order_products on order_products.order_id=orders.id 
+                    
+                    where orders.id='.$orderId.' group by 
+                    orders.id')[0];
+                $price=$price->price;
+                    $service_name=ucwords((str_replace("_"," ",$service->name)));
+                    $orderPreference=OrderFastPreference::select('preference','product_id', 'name')
+                    ->where('order_id',$orderId)
+                    ->get();
+                     
+                $order_total = $price+$order->delivery_fee+$order->tax_amount-$order->discount_amount - $order->promotion_discount + $order->service_fee + $order->cancellation_fee + $order->reschedule_fee;
+                if ($order_total < 0) {
+                    $order_total = 0;
+                }
+                $cancellationBuffer = GlobalSetting::select('value')
+                            ->where('setting_name','cancellation_buffer')
+                            ->first();
+                $cancellation = GlobalSetting::select('value')
+                            ->where('setting_name','cancellation_fee')
+                            ->first();
+                $pickupStartBuffer = GlobalSetting::select('value')
+                            ->where('setting_name','rescheduling_buffer_start')
+                            ->first();
+                $pickupEndBuffer = GlobalSetting::select('value')
+                            ->where('setting_name','rescheduling_buffer_end')
+                            ->first();
+                $rescheduling_fee = GlobalSetting::select('value')
+                            ->where('setting_name','rescheduling_fee')
+                            ->first();
+              
+                            
+                $cancellation=$cancellation->value;
+
+                $order=array(
+                    'order_id'=>$order->id,
+                    'status'=>$order->status,
+                    'address_id' => $addressId,
+                    'total_price'=> $order_total,
+                    'delivery_fee'=>$order->delivery_fee,
+                    'tax_amount'=>$order->tax_amount,
+                    'discount_amount'=>$order->discount_amount,
+                    'promotion_discount'=>$order->promotion_discount,
+                    'order_cancel'=>$order->cancellation_fee,
+                    'order_reschedule'=>$order->reschedule_fee,
+                    'sub_total'=>$price,
+                    'service_fee'=>$order->service_fee,
+                    'method_of_payment'=>$order->method_of_payment,
+                    'pickup_date'=>$order->pickup_date,
+                    'pickup_start'=>$order->pickup_start,
+                    'pickup_end'=>$order->pickup_end,
+                    'delivery_date'=>$order->delivery_date,
+                    'delivery_start'=>$order->delivery_start,
+                    'delivery_end'=>$order->delivery_end,
+                    'is_rated'=>$order->is_rated,
+                    'created_at'=>date('Y-m-d H:i:s',strtotime($order->created_at)),
+                    'address'=>$address,
+                    'details'=>$orderDetails,
+                    'order_preference'=>$orderPreference,
+                    'delivery_raw_end'=>$order->delivery_date.' '.$order->delivery_end ,
+                    'pickup_raw_start'=>$order->pickup_date.' '.$order->pickup_start ,
+                    'cancellation_fee'=>$cancellation,
+                    'cancellation_buffer'=>$cancellationBuffer,
+                    'pickupRescStartBuffer'=>$pickupStartBuffer->value,
+                    'deliveryRescEndBuffer'=>$pickupEndBuffer->value,
+                    'rescheduling_fee'=>$rescheduling_fee->value
+                );
+
+                $success_arr = array(
+                    'status' => 1,
+                    'message' => 'Successfully retrieved order details. _ OLD',
+                    'order'=>$order,
+                );
+                
+                return json_encode($success_arr, JSON_NUMERIC_CHECK);
+            }
+            else
+            {
+                $failure_arr = array(
+                    'status' => 0,
+                    'message' => 'No Order found against this ID.',
+                );
+                return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+            }
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -475,10 +632,10 @@ class OrderController extends Controller
                 $pickupEndBuffer = GlobalSetting::select('value')->where('setting_name','rescheduling_buffer_end')->first();
                 $rescheduling_fee = GlobalSetting::select('value')->where('setting_name','rescheduling_fee')->first();
                 $cancellation=$cancellation->value;
-
+              
                 $order=array(
                     'order_id'=>$order->id,
-                    'status'=>$order->status_id,
+                    'status'=>$order->OrderStatus->name,
                     'address_id' => $order->address_id,
                     'total_price'=> $order_total,
                     'delivery_fee'=>$order->delivery_fee,
@@ -487,7 +644,7 @@ class OrderController extends Controller
                     'promotion_discount'=>$order->promotion_discount,
                     'order_cancel'=>$order->cancellation_fee,
                     'order_reschedule'=>$order->reschedule_fee,
-                    'sub_total'=>$price,
+                    'sub_total'=>0,
                     'service_fee'=>$order->service_fee,
                     'method_of_payment'=>$order->method_of_payment,
                     'pickup_date'=>$order->pickup_date,
@@ -498,7 +655,7 @@ class OrderController extends Controller
                     'delivery_end'=>$order->delivery_end,
                     'is_rated'=>$order->is_rated,
                     'created_at'=>date('Y-m-d H:i:s',strtotime($order->created_at)),
-                    'address'=>$order->CustomerAddress,
+                    'address'=> new ResourcesCustomerAddress($order->CustomerAddress),
                     'details'=>$orderDetails,
                     'order_preference'=>$orderPreference,
                     'delivery_raw_end'=>$order->delivery_date.' '.$order->delivery_end ,
@@ -574,4 +731,178 @@ class OrderController extends Controller
             );
             return json_encode($failure_array,JSON_NUMERIC_CHECK);  
     }
+
+    
+    public function rateOrder(Request $request)
+    {
+        if(!empty($request['customer_id']) && isset($request['customer_id']))
+        {
+            $customerId=$request['customer_id'];    
+        }
+        else
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "Parameter missing - customer_id should not be empty."
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        if(!empty($request['order_id']) && isset($request['order_id']))
+        {
+            $orderId=$request['order_id'];
+            $order= Order::select('id')->where('id',$orderId)->first();
+            if(empty($order))
+            {
+                $failure_array=array(
+                    "status" => 0,
+                    'message' => 'No Order found against this ID.',
+                );
+                return json_encode($failure_array,JSON_NUMERIC_CHECK);
+            }    
+        }
+        else
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "Parameter missing - order_id should not be empty."
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        if(!empty($request['customer_id']) && isset($request['customer_id']))
+        {
+            $customerId=$request['customer_id'];
+            $customer= Customer::select('id')->where('id',$customerId)->first();
+            if(empty($customer))
+            {
+                $failure_array=array(
+                    "status" => 0,
+                    'message' => 'No Customer found against this ID.',
+                );
+                return json_encode($failure_array,JSON_NUMERIC_CHECK);
+            }    
+        }
+        else
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "Parameter missing - customer_id should not be empty."
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        if(!empty($request['rating']) && isset($request['rating']))
+        {
+            $rating=$request['rating'];
+            if (is_numeric($rating))
+            {
+
+            }   
+            else
+            {
+                $failure_array=array(
+                    "status" => 0,
+                    "message" => "Parameter rating should be numeric."
+                );
+                return json_encode($failure_array,JSON_NUMERIC_CHECK);
+            } 
+        }
+        else
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "Parameter missing - rating should not be empty."
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        $customerOrder= Order::select('id')
+                ->where('id',$orderId)
+                ->where('customer_id',$customerId)
+                ->first();
+        if(empty($customerOrder))
+        {
+            $failure_arr = array(
+                'status' => 0,
+                'message' => 'No Such Order exists against this customer.',
+            );
+            return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $customerOrder->rating=$rating;
+            $customerOrder->is_rated=1;
+            if(isset($request['comment']) && !empty($request['comment']))
+            {
+                $customerOrder->comments=$request['comment'];
+            }
+            $customerOrder->update();
+            $success_arr = array(
+                'status' => 1,
+                'message' => 'Order rating has been saved successfully',
+            );
+            return json_encode($success_arr, JSON_NUMERIC_CHECK);
+        }
+    }
+   
+    public function reschedule(Request $request)
+    {
+        $request=json_decode($request->getContent(),true);
+
+        $order=Order::find($request["order_id"]);
+       
+        if(isset($request["pickup_date"]) && isset($request["pickup_start"])){
+            $d=date('Y-m-d',strtotime($request["pickup_date"]));
+            
+            $order->pickup_date=$d;
+            $order->pickupdate=$request["pickup_date"];
+            
+            $order->pickup_end=$request["pickup_end"];
+           
+        }
+        if(!isset($request["delivery_date"]) || empty($request["delivery_date"]))
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "missing"
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $d=date('Y-m-d',strtotime($request["delivery_date"]));
+            $order->delivery_date=$d;
+            $order->deliverydate=$request["delivery_date"];
+        }
+        if(!isset($request["delivery_start"]) || empty($request["delivery_start"]))
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "missing"
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $order->delivery_start=$request["delivery_start"];
+        }
+        if(!isset($request["delivery_end"]) || empty($request["delivery_end"]))
+        {
+            $failure_array=array(
+                "status" => 0,
+                "message" => "missing"
+            );
+            return json_encode($failure_array,JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $order->delivery_end=$request["delivery_end"];
+        }
+        
+        $order->reschedule_fee = $order->reschedule_fee + $request["reschedule_fee"];
+        $order->update();
+        $success_arr=array(
+                "status" => 1,
+                "message" => "Order has been rescheduled."
+            );
+            return json_encode($success_arr,JSON_NUMERIC_CHECK);
+        
+    } 
 }

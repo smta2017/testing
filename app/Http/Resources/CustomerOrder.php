@@ -18,7 +18,7 @@ class CustomerOrder extends JsonResource
         return[
             "status" => 1,
             "message" => "Successfully retrieved orders against customer.",
-            "orders" => OrderResource::collection($this->Orders->where('canceled_at','null')),
+            "orders" => OrderResource::collection($this->Orders->where('canceled_at',null)),
             "cancellation_fee" => $this->cancellation_fee,
             "cancellation_buffer" => $this->cancellation_buffer,
             "pickupRescStartBuffer" => $this->pickupRescStartBuffer,

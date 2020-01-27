@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api\Address;
 
+use App\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\CustomerAddress;
 use DB;
+use JWTAuth;
+
 class CustomerAddressController extends Controller
 {
     /**
@@ -220,8 +223,104 @@ class CustomerAddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+         $deleteAddress= CustomerAddress::destroy($request['id']);
+         if($deleteAddress == true)
+         {
+             $success_arr = array(
+                 'status' => 1,
+                 'message' => 'Address Deleted Successfully.',
+             );
+             return json_encode($success_arr, JSON_NUMERIC_CHECK);
+         }
+         else
+         {
+             $failure_arr = array(
+                 'status' => 0,
+                 'message' => 'No Address Found against this ID.',
+             );
+             return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+         }
     }
+
+    // ============ Helper =================
+    public function markDefaultAddress(Request $request)
+    {
+        $request->validate([
+            'address_id' => 'numeric|required|min:4|max:999998',
+            'customer_id'=>'numeric|required|min:4|max:999998'
+        ]);
+
+        $address_id=$request['address_id'];
+        $customer_id=$request['customer_id'];
+        
+        $old_default_customer_address = CustomerAddress::where('customer_id',$customer_id)->where('is_default',1)->first();
+        if (!empty($old_default_customer_address)) {
+            $old_default_customer_address->is_default=0;
+            $old_default_customer_address->save();
+        }else{
+            $failure_arr = array('status' => 0,'message' => 'Missing.',);
+            return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+        }   
+
+
+        $customer_address = CustomerAddress::find($address_id);
+        if (!empty($customer_address)) {
+            $customer_address->is_default=1;
+            $customer_address->save();
+        }else{
+            $failure_arr = array('status' => 0,'message' => 'Missing.',);
+            return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+        }   
+
+        $success_arr = array(
+            'status' => 1,
+            'message' => 'Address marked as default successfully',
+        );
+        return json_encode($success_arr, JSON_NUMERIC_CHECK);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        if(isset($request['id']) && !empty($request['id']))
+        {
+            $customer= Customer::where('id',$request['CustomerId'])->first();
+        }
+        else
+        {
+            $failure_arr = array(
+                'status' => 0,
+                'message' => 'Parameter Missing - id should not be empty.',
+            );
+            return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+        }
+        if(!empty($customer))
+        {
+            $customer= Customer::find($request['CustomerId']);
+            $customer->first_name = $request->first_name ;
+            $customer->last_name = $request->last_name ;
+            $customer->phone = $request->phone ;
+            $customer->email = $request->email ;
+            $customer->save();
+            $customer->jwt_token =JWTAuth::getToken()->get();
+            $success_arr = array(
+                'status' => 1,
+                'message' => 'Customer Profile updated successfully.',
+                'customer'=>$customer,
+                'address'=>$customer->CustomerAddresses,
+                'preference'=>$customer->CustomerPreferencies
+            );
+            return json_encode($success_arr, JSON_NUMERIC_CHECK);
+        }
+        else
+        {
+            $failure_arr = array(
+                'status' => 0,
+                'message' => 'No Customer found against this ID.',
+            );
+            return json_encode($failure_arr, JSON_NUMERIC_CHECK);
+        }
+    }
+ 
 }
