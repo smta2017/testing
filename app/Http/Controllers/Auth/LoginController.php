@@ -49,7 +49,7 @@ class LoginController extends Controller
 
     public function showAdminLoginForm()
     {
-        return view('authAdmin.login');
+        return view('admin.auth.login');
     }
 
 

@@ -15,14 +15,22 @@ class OrderProduct extends Model
     {
 		  return $this->belongsTo('App\Order');
     }
-
-    public function Product()
+    
+    public function ProductPrice()
     {
-		  return $this->belongsTo('App\Product');
+		  return $this->belongsTo('App\ProductPrice');
     }
 
-    public function Service()
-    {
-		  return $this->belongsTo('App\Service');
-    }
+    // public function Product()
+    // {
+	// 	  return $this->belongsTo('App\Product');
+    // }
+
+    // public function Service()
+    // {
+	// 	  return $this->belongsTo('App\Service');
+    // }
+
+    
+
 }

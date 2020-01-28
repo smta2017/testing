@@ -13,9 +13,9 @@ class OrderFastPreference extends Model
 		  return $this->belongsTo('App\Order');
     }
 
-    public function OrderProduct()
+    public function Product()
     {
-		  return $this->belongsTo('App\OrderProduct');
+		  return $this->belongsTo('App\Product');
     }
 
 }

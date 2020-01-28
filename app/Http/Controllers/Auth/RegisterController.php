@@ -80,7 +80,7 @@ class RegisterController extends Controller
     //==================== Admin =======================
     public function showAdminRegisterForm()
     {
-        return view('authAdmin.register');
+        return view('admin.auth.register');
     }
 
 

@@ -11,6 +11,11 @@ class Service extends Model
     	return $this->hasMany('App\OrderProduct');
     }
     
+     public function OrderServices()
+    {
+    	return $this->hasMany('App\OrderService');
+    }
+
     public function ProductPrices()
     {
     	return $this->hasMany('App\ProductPrice');

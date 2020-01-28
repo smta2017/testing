@@ -8,6 +8,11 @@ class ProductPrice extends Model
 {
     protected $table = 'product_price';
 
+    public function OrderProducts()
+    {
+    	return $this->hasMany('App\OrderProduct');
+    }
+
     public function Product()
     {
 		  return $this->belongsTo('App\Product');

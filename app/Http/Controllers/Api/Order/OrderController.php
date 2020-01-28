@@ -27,6 +27,11 @@ class OrderController extends Controller
      */
     public function index()
     {
+       
+    }
+
+    public function indextest()
+    {
         return json_encode(array('status' => 0), JSON_NUMERIC_CHECK);
     }
 
@@ -173,7 +178,20 @@ class OrderController extends Controller
         $newOrder->status_id = 1;
 
         // $newOrder->created_at=date('Y-m-d H:i:s');
-        $newOrder->save();
+        if($newOrder->save()){
+            if($order['customised_preference'] == 1)
+            {
+                foreach($order['preferences'] as $preferences)
+                {
+                    $orderPreference=new OrderFastPreference();
+                    $orderPreference->order_id=$newOrder->id;
+                    $orderPreference->product_id=$preferences['product_id'];
+                    $orderPreference->preference=$preferences['preference'];
+                    $orderPreference->name=$preferences['name'];
+                    $orderPreference->save();
+                }
+            }
+        };
        
         $success_arr = array(
             'status' => 1,

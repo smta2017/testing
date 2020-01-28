@@ -82,27 +82,27 @@ Route::group(['middleware' => ['cors','LogRequest']], function() {
     });
 
     // will remove in future
-    Route::OPTIONS('/add-customer-address',      'Api\Address\CustomerAddressController@store');
-    Route::OPTIONS('/get-location',              'Api\Location\LocationController@getLocations');
-    Route::OPTIONS('/updateSignedOutStatus',     'Api\Helper\UnanimousHelperController@updateSignedOut');
-    Route::OPTIONS('/get-available-promotions',  'Api\Helper\UnanimousHelperController@getAvailablePromotions');
-    Route::OPTIONS('/get-customer-profile/{id?}','Api\Helper\UnanimousHelperController@getCustomerProfile');
-    Route::OPTIONS('/get-personal-code',         'Api\Helper\UnanimousHelperController@getPersonalCode');
-    Route::OPTIONS('/get-orders',                'Api\Helper\UnanimousHelperController@getCustomerOrders');
-    Route::OPTIONS('/get-time-slots',            'Api\TimeStlot\TimeSlotController@getAvailableSlots'); 
-    Route::OPTIONS('/place-order',               'Api\Order\OrderController@store');
+    Route::OPTIONS('/add-customer-address',      'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/get-location',              'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/updateSignedOutStatus',     'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/get-available-promotions',  'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/get-customer-profile/{id?}','Api\Order\OrderController@indextest');
+    Route::OPTIONS('/get-personal-code',         'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/get-orders',                'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/get-time-slots',            'Api\Order\OrderController@indextest'); 
+    Route::OPTIONS('/place-order',               'Api\Order\OrderController@indextest');
 
-    Route::OPTIONS('/get-services',              'Api\Order\OrderController@index');
-    Route::OPTIONS('/get-services-names',        'Api\Order\OrderController@index');
-    Route::OPTIONS('/delete-customer-address',   'Api\Order\OrderController@index');
-    Route::OPTIONS('/cancel-order',              'Api\Order\OrderController@index');
-    Route::OPTIONS('/get-order-details',         'Api\Order\OrderController@index');
-    Route::OPTIONS('/get-services-names',        'Api\Order\OrderController@index');
-    Route::OPTIONS('/cancel-order',              'Api\Order\OrderController@index');
-    Route::OPTIONS('/mark-default-address',      'Api\Order\OrderController@index');
-    Route::OPTIONS('/set-preference',            'Api\Order\OrderController@index');
-    Route::OPTIONS('/rate-order',                'Api\Order\OrderController@index');
-    Route::OPTIONS('/delete-customer-address',   'Api\Order\OrderController@index');
-    Route::OPTIONS('/update-customer-profile',   'Api\Order\OrderController@index');
+    Route::OPTIONS('/get-services',              'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/get-services-names',        'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/delete-customer-address',   'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/cancel-order',              'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/get-order-details',         'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/get-services-names',        'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/cancel-order',              'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/mark-default-address',      'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/set-preference',            'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/rate-order',                'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/delete-customer-address',   'Api\Order\OrderController@indextest');
+    Route::OPTIONS('/update-customer-profile',   'Api\Order\OrderController@indextest');
 
 });

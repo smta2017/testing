@@ -16,8 +16,15 @@ class Product extends Model
     	return $this->hasMany('App\ProductPrice');
     }
 
-    public function CustomerPreference()
+    public function CustomerPreferencies()
     {
     	return $this->hasMany('App\CustomerPreference');
     }
+
+    public function OrderFastPreferencies()
+    {
+    	return $this->hasMany('App\OrderFastPreference');
+    }
+
+    
 }
