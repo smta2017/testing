@@ -16,7 +16,7 @@ class CustomerAddress extends JsonResource
     {
         // return parent::toArray($request);
         return[
-            "address_id"=> $this->id,
+            "id"=> $this->id,
             "latitude"=> $this->latitude,
             "location_id"=> $this->location_id,
             "longitude"=> $this->longitude,
