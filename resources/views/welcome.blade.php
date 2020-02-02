@@ -84,7 +84,7 @@
             <div class="content">
                 <div class="title m-b-md">
                    <a href="/admin">
-                       <img src="/imgs/makwa-admin.png" alt=""><br>
+                       <img src="/imgs/Makwa-admin_img.png" alt=""><br>
                    </a> 
                 </div>
 

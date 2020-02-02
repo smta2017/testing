@@ -2,7 +2,7 @@
 <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                    <a href="index.html"><img src="imgs/Makwa-admin.png" alt="logo"></a>
+                    <a href="index.html"><img src="imgs/Makwa-admin_img.png" alt="logo"></a>
                 </div>
             </div>
             <div class="main-menu">
