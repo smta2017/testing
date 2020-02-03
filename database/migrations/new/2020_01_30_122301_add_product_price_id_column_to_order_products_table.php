@@ -15,6 +15,7 @@ class AddProductPriceIdColumnToOrderProductsTable extends Migration
     {
         Schema::table('order_products', function (Blueprint $table) {
             $table->bigInteger('product_price_id');
+            $table->timestamps();
         });
     }
 
